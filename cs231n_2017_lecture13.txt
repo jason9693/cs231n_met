@@ -1,0 +1,1609 @@
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 1 May 18, 2017 
+Lecture 13: 
+Generative Models
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Administrative 
+2 
+Midterm grades released on Gradescope this week 
+A3 due next Friday, 5/26 
+HyperQuest deadline extended to Sunday 5/21, 11:59pm 
+Poster session is June 6
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Overview 
+¡Ü Unsupervised Learning 
+¡Ü Generative Models 
+¡Û PixelRNN and PixelCNN 
+¡Û Variational Autoencoders (VAE) 
+¡Û Generative Adversarial Networks (GAN) 
+3
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Supervised vs Unsupervised Learning 
+4 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Supervised vs Unsupervised Learning 
+5 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc. 
+Cat 
+Classification 
+This image is CC0 public domain
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Supervised vs Unsupervised Learning 
+6 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc. 
+DOG, DOG, CAT 
+This image is CC0 public domain 
+Object Detection
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Supervised vs Unsupervised Learning 
+7 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc. 
+Semantic Segmentation 
+GRASS, CAT, 
+TREE, SKY
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Supervised vs Unsupervised Learning 
+8 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc. 
+Image captioning 
+A cat sitting on a suitcase on the floor 
+Caption generated using neuraltalk2 
+Image is CC0 Public domain.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 9 May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+Supervised vs Unsupervised Learning
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 10 May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+Supervised vs Unsupervised Learning 
+K-means clustering 
+This image is CC0 public domain
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 11 May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+Supervised vs Unsupervised Learning 
+Principal Component Analysis 
+(Dimensionality reduction) 
+This image from Matthias Scholz 
+is CC0 public domain 
+3-d 2-d
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+Supervised vs Unsupervised Learning 
+Autoencoders 
+(Feature learning) 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 13 May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+Supervised vs Unsupervised Learning 
+2-d density estimation
+2-d density images left and right 
+are CC0 public domain 
+1-d density estimation 
+Figure copyright Ian Goodfellow, 2016. Reproduced with permission. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+14 
+Supervised vs Unsupervised Learning 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Unsupervised Learning 
+Data: x 
+Just data, no labels! 
+Goal: Learn some underlying 
+hidden structure of the data 
+Examples: Clustering, 
+dimensionality reduction, feature 
+learning, density estimation, etc. 
+Holy grail: Solve 
+unsupervised learning 
+=> understand structure 
+of visual world 
+15 
+Supervised vs Unsupervised Learning 
+Supervised Learning 
+Data: (x, y) 
+x is data, y is label 
+Goal: Learn a function to map x -> y 
+Examples: Classification, 
+regression, object detection, 
+semantic segmentation, image 
+captioning, etc. 
+Training data is cheap
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Models 
+16 
+Training data ~ pdata(x) Generated samples ~ pmodel(x) 
+Want to learn pmodel(x) similar to pdata(x) 
+Given training data, generate new samples from same distribution
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Models 
+17 
+Training data ~ pdata(x) Generated samples ~ pmodel(x) 
+Want to learn pmodel(x) similar to pdata(x) 
+Given training data, generate new samples from same distribution 
+Addresses density estimation, a core problem in unsupervised learning 
+Several flavors: 
+- Explicit density estimation: explicitly define and solve for pmodel(x) 
+- Implicit density estimation: learn model that can sample from pmodel(x) w/o explicitly defining it 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Why Generative Models? 
+18 
+- Realistic samples for artwork, super-resolution, colorization, etc. 
+- Generative models of time-series data can be used for simulation and 
+planning (reinforcement learning applications!) 
+- Training generative models can also enable inference of latent 
+representations that can be useful as general features 
+FIgures from L-R are copyright: (1) Alec Radford et al. 2016; (2) David Berthelot et al. 2017; Phillip Isola et al. 2017. Reproduced with authors permission. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Taxonomy of Generative Models 
+19 
+Generative models 
+Explicit density Implicit density 
+Direct 
+Tractable density Approximate density Markov Chain 
+Variational Markov Chain 
+Fully Visible Belief Nets 
+- NADE 
+- MADE 
+- PixelRNN/CNN 
+Change of variables models 
+(nonlinear ICA) 
+Variational Autoencoder Boltzmann Machine 
+GSN 
+GAN 
+Figure copyright and adapted from Ian Goodfellow, Tutorial on Generative Adversarial Networks, 2017.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Fully Visible Belief Nets 
+- NADE 
+- MADE 
+- PixelRNN/CNN 
+Change of variables models 
+(nonlinear ICA) 
+Taxonomy of Generative Models 
+20 
+Generative models 
+Explicit density Implicit density 
+Direct 
+Tractable density Approximate density Markov Chain 
+Variational Markov Chain 
+Variational Autoencoder Boltzmann Machine 
+GSN 
+GAN 
+Figure copyright and adapted from Ian Goodfellow, Tutorial on Generative Adversarial Networks, 2017. 
+Today: discuss 3 most 
+popular types of generative 
+models today
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 21 May 18, 2017 
+PixelRNN and PixelCNN
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 22 May 18, 2017 
+Fully visible belief network 
+Use chain rule to decompose likelihood of an image x into product of 1-d 
+distributions: 
+Explicit density model 
+Likelihood of 
+image x 
+Probability of i¡¯th pixel value 
+given all previous pixels 
+Then maximize likelihood of training data
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Then maximize likelihood of training data 
+23 
+Fully visible belief network 
+Use chain rule to decompose likelihood of an image x into product of 1-d 
+distributions: 
+Explicit density model 
+Likelihood of 
+image x 
+Probability of i¡¯th pixel value 
+given all previous pixels 
+Complex distribution over pixel 
+values => Express using a neural 
+network!
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 24 May 18, 2017 
+Fully visible belief network 
+Use chain rule to decompose likelihood of an image x into product of 1-d 
+distributions: 
+Explicit density model 
+Likelihood of 
+image x 
+Probability of i¡¯th pixel value 
+given all previous pixels 
+Will need to define 
+ordering of ¡°previous 
+pixels¡± 
+Complex distribution over pixel 
+values => Express using a neural 
+Then maximize likelihood of training data network!
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelRNN 
+25 
+Generate image pixels starting from corner 
+Dependency on previous pixels modeled 
+using an RNN (LSTM) 
+[van der Oord et al. 2016]
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelRNN 
+26 
+Generate image pixels starting from corner 
+Dependency on previous pixels modeled 
+using an RNN (LSTM) 
+[van der Oord et al. 2016]
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelRNN 
+27 
+Generate image pixels starting from corner 
+Dependency on previous pixels modeled 
+using an RNN (LSTM) 
+[van der Oord et al. 2016]
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelRNN 
+28 
+Generate image pixels starting from corner 
+Dependency on previous pixels modeled 
+using an RNN (LSTM) 
+[van der Oord et al. 2016] 
+Drawback: sequential generation is slow!
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelCNN 
+29 
+[van der Oord et al. 2016] 
+Still generate image pixels starting from 
+corner 
+Dependency on previous pixels now 
+modeled using a CNN over context region 
+Figure copyright van der Oord et al., 2016. Reproduced with permission. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelCNN 
+30 
+[van der Oord et al. 2016] 
+Still generate image pixels starting from 
+corner 
+Dependency on previous pixels now 
+modeled using a CNN over context region 
+Training: maximize likelihood of training 
+images 
+Figure copyright van der Oord et al., 2016. Reproduced with permission. 
+Softmax loss at each pixel
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+PixelCNN 
+31 
+[van der Oord et al. 2016] 
+Still generate image pixels starting from 
+corner 
+Dependency on previous pixels now 
+modeled using a CNN over context region 
+Training is faster than PixelRNN 
+(can parallelize convolutions since context region 
+values known from training images) 
+Generation must still proceed sequentially 
+=> still slow 
+Figure copyright van der Oord et al., 2016. Reproduced with permission. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generation Samples 
+32 
+Figures copyright Aaron van der Oord et al., 2016. Reproduced with permission. 
+32x32 CIFAR-10 32x32 ImageNet
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 33 May 18, 2017 
+PixelRNN and PixelCNN 
+Improving PixelCNN performance 
+- Gated convolutional layers 
+- Short-cut connections 
+- Discretized logistic loss 
+- Multi-scale 
+- Training tricks 
+- Etc¡¦ 
+See 
+- Van der Oord et al. NIPS 2016 
+- Salimans et al. 2017 
+(PixelCNN++) 
+Pros: 
+- Can explicitly compute likelihood 
+p(x) 
+- Explicit likelihood of training 
+data gives good evaluation 
+metric 
+- Good samples 
+Con: 
+- Sequential generation => slow
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 34 May 18, 2017 
+Variational 
+Autoencoders (VAE)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 35 May 18, 2017 
+PixelCNNs define tractable density function, optimize likelihood of training data: 
+So far...
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+So far... 
+36 
+PixelCNNs define tractable density function, optimize likelihood of training data: 
+VAEs define intractable density function with latent z: 
+Cannot optimize directly, derive and optimize lower bound on likelihood instead
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+37 
+Encoder 
+Input data 
+Features 
+Unsupervised approach for learning a lower-dimensional feature representation 
+from unlabeled training data
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+38 
+Encoder 
+Input data 
+Features 
+Unsupervised approach for learning a lower-dimensional feature representation 
+from unlabeled training data 
+Originally: Linear + 
+nonlinearity (sigmoid) 
+Later: Deep, fully-connected 
+Later: ReLU CNN
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+39 
+Encoder 
+Input data 
+Features 
+Unsupervised approach for learning a lower-dimensional feature representation 
+from unlabeled training data 
+Originally: Linear + 
+nonlinearity (sigmoid) 
+Later: Deep, fully-connected 
+Later: ReLU CNN 
+z usually smaller than x 
+(dimensionality reduction) 
+Q: Why dimensionality 
+reduction?
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+40 
+Encoder 
+Input data 
+Features 
+Unsupervised approach for learning a lower-dimensional feature representation 
+from unlabeled training data 
+Originally: Linear + 
+nonlinearity (sigmoid) 
+Later: Deep, fully-connected 
+Later: ReLU CNN 
+z usually smaller than x 
+(dimensionality reduction) 
+Q: Why dimensionality 
+reduction? 
+A: Want features to 
+capture meaningful 
+factors of variation in 
+data
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+41 
+Encoder 
+Input data 
+Features 
+How to learn this feature representation?
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+42 
+Encoder 
+Input data 
+Features 
+How to learn this feature representation? 
+Train such that features can be used to reconstruct original data 
+¡°Autoencoding¡± - encoding itself 
+Decoder 
+Reconstructed 
+input data
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+43 
+Encoder 
+Input data 
+Features 
+How to learn this feature representation? 
+Train such that features can be used to reconstruct original data 
+¡°Autoencoding¡± - encoding itself 
+Decoder 
+Reconstructed 
+input data 
+Originally: Linear + 
+nonlinearity (sigmoid) 
+Later: Deep, fully-connected 
+Later: ReLU CNN (upconv)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+44 
+Encoder 
+Input data 
+Features 
+How to learn this feature representation? 
+Train such that features can be used to reconstruct original data 
+¡°Autoencoding¡± - encoding itself 
+Decoder 
+Reconstructed 
+input data 
+Reconstructed data 
+Input data 
+Encoder: 4-layer conv 
+Decoder: 4-layer upconv
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+45 
+Encoder 
+Input data 
+Features 
+Decoder 
+Reconstructed 
+input data 
+Reconstructed data 
+Input data 
+Encoder: 4-layer conv 
+Decoder: 4-layer upconv 
+L2 Loss function: 
+Train such that features 
+can be used to 
+reconstruct original data
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+46 
+Encoder 
+Input data 
+Features 
+Decoder 
+Reconstructed 
+input data 
+Reconstructed data 
+Input data 
+Encoder: 4-layer conv 
+Decoder: 4-layer upconv 
+L2 Loss function: 
+Train such that features 
+can be used to 
+reconstruct original data 
+Doesn¡¯t use labels!
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+47 
+Encoder 
+Input data 
+Features 
+Decoder 
+Reconstructed 
+input data 
+After training, 
+throw away decoder
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+48 
+Encoder 
+Input data 
+Features 
+Classifier 
+Predicted Label 
+Fine-tune 
+encoder 
+jointly with 
+classifier 
+Loss function 
+(Softmax, etc) 
+Encoder can be 
+used to initialize a 
+supervised model 
+plane 
+dog deer 
+bird 
+truck 
+Train for final task 
+(sometimes with 
+small data)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Some background first: Autoencoders 
+49 
+Encoder 
+Input data 
+Features 
+Decoder 
+Reconstructed 
+input data 
+Autoencoders can reconstruct 
+data, and can learn features to 
+initialize a supervised model 
+Features capture factors of 
+variation in training data. Can we 
+generate new images from an 
+autoencoder?
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 50 May 18, 2017 
+Variational Autoencoders 
+Probabilistic spin on autoencoders - will let us sample from the model to generate data!
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 51 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Assume training data is generated from underlying unobserved (latent) 
+representation z 
+Probabilistic spin on autoencoders - will let us sample from the model to generate data! 
+Sample from 
+true conditional
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 52 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Assume training data is generated from underlying unobserved (latent) 
+representation z 
+Probabilistic spin on autoencoders - will let us sample from the model to generate data! 
+Sample from 
+true conditional 
+Intuition (remember from autoencoders!): 
+x is an image, z is latent factors used to 
+generate x: attributes, orientation, etc. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 53 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 54 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How should we represent this model? 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 55 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How should we represent this model? 
+Choose prior p(z) to be simple, e.g. 
+Gaussian. Reasonable for latent attributes, 
+e.g. pose, how much smile. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 56 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How should we represent this model? 
+Choose prior p(z) to be simple, e.g. 
+Gaussian. 
+Conditional p(x|z) is complex (generates 
+image) => represent with neural network 
+Decoder 
+network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 57 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How to train the model? 
+Decoder 
+network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 58 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How to train the model? 
+Remember strategy for training generative 
+models from FVBNs. Learn model parameters 
+to maximize likelihood of training data 
+Decoder 
+network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 59 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How to train the model? 
+Remember strategy for training generative 
+models from FVBNs. Learn model parameters 
+to maximize likelihood of training data 
+Now with latent z 
+Decoder 
+network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 60 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How to train the model? 
+Remember strategy for training generative 
+models from FVBNs. Learn model parameters 
+to maximize likelihood of training data 
+Q: What is the problem with this? 
+Decoder 
+network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 61 May 18, 2017 
+Sample from 
+true prior 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders 
+Sample from 
+true conditional 
+We want to estimate the true parameters 
+of this generative model. 
+How to train the model? 
+Remember strategy for training generative 
+models from FVBNs. Learn model parameters 
+to maximize likelihood of training data 
+Q: What is the problem with this? 
+Intractable! 
+Decoder 
+network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 62 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 63 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood: 
+Simple Gaussian prior 
+.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 64 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood: 
+Decoder neural network 
+. .
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 65 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood: 
+Intractible to compute 
+p(x|z) for every z! 
+.. . .
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 66 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood: 
+.. . . 
+Posterior density also intractable:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 67 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood: 
+.. 
+. 
+. 
+Posterior density also intractable: 
+. .. 
+. 
+Intractable data likelihood
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 68 May 18, 2017 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Variational Autoencoders: Intractability 
+Data likelihood: 
+.. 
+. 
+. 
+Posterior density also intractable: 
+. .. 
+. 
+Solution: In addition to decoder network modeling p¥è(x|z), define additional 
+encoder network q.(z|x) that approximates p¥è(z|x) 
+Will see that this allows us to derive a lower bound on the data likelihood that is 
+tractable, which we can optimize 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Variational Autoencoders 
+69 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Since we¡¯re modeling probabilistic generation of data, encoder and decoder networks are probabilistic 
+Mean and (diagonal) covariance of z | x Mean and (diagonal) covariance of x | z 
+Encoder network Decoder network 
+(parameters .) (parameters ¥è)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Variational Autoencoders 
+70 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Encoder network 
+Since we¡¯re modeling probabilistic generation of data, encoder and decoder networks are probabilistic 
+Decoder network 
+(parameters .) (parameters ¥è) 
+Sample z from Sample x|z from
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Variational Autoencoders 
+71 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 
+Encoder network 
+Since we¡¯re modeling probabilistic generation of data, encoder and decoder networks are probabilistic 
+Decoder network 
+(parameters .) (parameters ¥è) 
+Sample z from Sample x|z from 
+Encoder and decoder networks also called 
+¡°recognition¡±/¡°inference¡± and ¡°generation¡± networks
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 72 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 73 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood: 
+Taking expectation wrt. z 
+(using encoder network) will 
+come in handy later
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 74 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 75 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 76 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 77 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood:
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 78 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood: 
+The expectation wrt. z (using 
+encoder network) let us write 
+nice KL terms
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 79 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood: 
+This KL term (between 
+Gaussians for encoder and z 
+prior) has nice closed-form 
+solution! 
+p¥è(z|x) intractable (saw 
+earlier), can¡¯t compute this KL 
+term :( But we know KL 
+divergence always >= 0. 
+Decoder network gives p¥è(x|z), can 
+compute estimate of this term through 
+sampling. (Sampling differentiable 
+through reparam. trick, see paper.)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 80 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood: 
+Tractable lower bound which we can take 
+gradient of and optimize! (p¥è(x|z) differentiable, 
+KL term differentiable)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 81 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood: 
+Variational lower bound (¡°ELBO¡±) Training: Maximize lower bound
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 82 May 18, 2017 
+Variational Autoencoders 
+Now equipped with our encoder and decoder networks, let¡¯s work out the (log) data likelihood: 
+Variational lower bound (¡°ELBO¡±) Training: Maximize lower bound 
+Reconstruct 
+the input data 
+Make approximate 
+posterior distribution 
+close to prior
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 83 May 18, 2017 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 84 May 18, 2017 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound 
+Let¡¯s look at computing the bound 
+(forward pass) for a given minibatch of 
+input data
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 85 May 18, 2017 
+Encoder network 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 86 May 18, 2017 
+Encoder network 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound 
+Make approximate 
+posterior distribution 
+close to prior
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 87 May 18, 2017 
+Encoder network 
+Sample z from 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound 
+Make approximate 
+posterior distribution 
+close to prior
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 88 May 18, 2017 
+Encoder network 
+Decoder network 
+Sample z from 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound 
+Make approximate 
+posterior distribution 
+close to prior
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 89 May 18, 2017 
+Encoder network 
+Decoder network 
+Sample z from 
+Sample x|z from 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound 
+Make approximate 
+posterior distribution 
+close to prior 
+Maximize 
+likelihood of 
+original input 
+being 
+reconstructed
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 90 May 18, 2017 
+Encoder network 
+Decoder network 
+Sample z from 
+Sample x|z from 
+Input Data 
+Variational Autoencoders 
+Putting it all together: maximizing the 
+likelihood lower bound 
+Make approximate 
+posterior distribution 
+close to prior 
+Maximize 
+likelihood of 
+original input 
+being 
+reconstructed 
+For every minibatch of input 
+data: compute this forward 
+pass, and then backprop!
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 91 May 18, 2017 
+Decoder network 
+Sample z from 
+Sample x|z from 
+Variational Autoencoders: Generating Data! 
+Use decoder network. Now sample z from prior! 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 92 May 18, 2017 
+Decoder network 
+Sample z from 
+Sample x|z from 
+Variational Autoencoders: Generating Data! 
+Use decoder network. Now sample z from prior! 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 93 May 18, 2017 
+Decoder network 
+Sample z from 
+Sample x|z from 
+Variational Autoencoders: Generating Data! 
+Use decoder network. Now sample z from prior! Data manifold for 2-d z 
+Vary z1 
+Vary zKingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014 2
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 94 May 18, 2017 
+Variational Autoencoders: Generating Data! 
+Vary z1 
+Vary z2 
+Degree of smile 
+Head pose 
+Diagonal prior on z 
+=> independent 
+latent variables 
+Different 
+dimensions of z 
+encode 
+interpretable factors 
+of variation 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 95 May 18, 2017 
+Variational Autoencoders: Generating Data! 
+Vary z1 
+Vary z2 
+Degree of smile 
+Head pose 
+Diagonal prior on z 
+=> independent 
+latent variables 
+Different 
+dimensions of z 
+encode 
+interpretable factors 
+of variation 
+Also good feature representation that 
+can be computed using q.(z|x)! 
+Kingma and Welling, ¡°Auto-Encoding Variational Bayes¡±, ICLR 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 96 May 18, 2017 
+Variational Autoencoders: Generating Data! 
+32x32 CIFAR-10 
+Labeled Faces in the Wild 
+Figures copyright (L) Dirk Kingma et al. 2016; (R) Anders Larsen et al. 2017. Reproduced with permission. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Variational Autoencoders 
+97 
+Probabilistic spin to traditional autoencoders => allows generating data 
+Defines an intractable density => derive and optimize a (variational) lower bound 
+Pros: 
+- Principled approach to generative models 
+- Allows inference of q(z|x), can be useful feature representation for other tasks 
+Cons: 
+- Maximizes lower bound of likelihood: okay, but not as good evaluation as 
+PixelRNN/PixelCNN 
+- Samples blurrier and lower quality compared to state-of-the-art (GANs) 
+Active areas of research: 
+- More flexible approximations, e.g. richer approximate posterior instead of diagonal 
+Gaussian 
+- Incorporating structure in latent variables 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 98 May 18, 2017 
+Generative Adversarial 
+Networks (GAN)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+So far... 
+99 
+PixelCNNs define tractable density function, optimize likelihood of training data: 
+VAEs define intractable density function with latent z: 
+Cannot optimize directly, derive and optimize lower bound on likelihood instead
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+So far... 
+PixelCNNs define tractable density function, optimize likelihood of training data: 
+VAEs define intractable density function with latent z: 
+Cannot optimize directly, derive and optimize lower bound on likelihood instead 
+10
+0 
+What if we give up on explicitly modeling density, and just want ability to sample?
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+So far... 
+PixelCNNs define tractable density function, optimize likelihood of training data: 
+VAEs define intractable density function with latent z: 
+Cannot optimize directly, derive and optimize lower bound on likelihood instead 
+10
+1 
+What if we give up on explicitly modeling density, and just want ability to sample? 
+GANs: don¡¯t work with any explicit density function! 
+Instead, take game-theoretic approach: learn to generate from training distribution 
+through 2-player game
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Adversarial Networks 
+10
+2 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+Problem: Want to sample from complex, high-dimensional training distribution. No direct 
+way to do this! 
+Solution: Sample from a simple distribution, e.g. random noise. Learn transformation to 
+training distribution. 
+Q: What can we use to 
+represent this complex 
+transformation?
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Problem: Want to sample from complex, high-dimensional training distribution. No direct 
+way to do this! 
+Solution: Sample from a simple distribution, e.g. random noise. Learn transformation to 
+training distribution. 
+Generative Adversarial Networks 
+10
+3 
+Input: Random noise z 
+Generator 
+Network 
+Output: Sample from 
+training distribution 
+Q: What can we use to 
+represent this complex 
+transformation? 
+A: A neural network! 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+10
+4 
+Generator network: try to fool the discriminator by generating real-looking images 
+Discriminator network: try to distinguish between real and fake images 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+10
+5 
+Generator network: try to fool the discriminator by generating real-looking images 
+Discriminator network: try to distinguish between real and fake images 
+Random noise z 
+Generator Network 
+Discriminator Network 
+Fake Images 
+(from generator) 
+Real Images 
+(from training set) 
+Real or Fake 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+Fake and real images copyright Emily Denton et al. 2015. Reproduced with permission.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+10
+6 
+Generator network: try to fool the discriminator by generating real-looking images 
+Discriminator network: try to distinguish between real and fake images 
+Train jointly in minimax game 
+Minimax objective function: 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+10
+7 
+Generator network: try to fool the discriminator by generating real-looking images 
+Discriminator network: try to distinguish between real and fake images 
+Train jointly in minimax game 
+Minimax objective function: 
+Discriminator output 
+for real data x 
+Discriminator output for 
+generated fake data G(z) 
+Discriminator outputs likelihood in (0,1) of real image 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+10
+8 
+Generator network: try to fool the discriminator by generating real-looking images 
+Discriminator network: try to distinguish between real and fake images 
+Train jointly in minimax game 
+Minimax objective function: 
+Discriminator output 
+for real data x 
+Discriminator output for 
+generated fake data G(z) 
+Discriminator outputs likelihood in (0,1) of real image 
+- Discriminator (¥èd) wants to maximize objective such that D(x) is close to 1 (real) and 
+D(G(z)) is close to 0 (fake) 
+- Generator (¥èg) wants to minimize objective such that D(G(z)) is close to 1 
+(discriminator is fooled into thinking generated G(z) is real) 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+10
+9 
+Minimax objective function: 
+Alternate between: 
+1. Gradient ascent on discriminator 
+2. Gradient descent on generator 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+11
+0 
+Minimax objective function: 
+Alternate between: 
+1. Gradient ascent on discriminator 
+2. Gradient descent on generator 
+In practice, optimizing this generator objective 
+does not work well! 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+When sample is likely 
+fake, want to learn 
+from it to improve 
+generator. But 
+gradient in this region 
+is relatively flat! 
+Gradient signal 
+dominated by region 
+where sample is 
+already good
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+11
+1 
+Minimax objective function: 
+Alternate between: 
+1. Gradient ascent on discriminator 
+2. Instead: Gradient ascent on generator, different 
+objective 
+Instead of minimizing likelihood of discriminator being correct, now 
+maximize likelihood of discriminator being wrong. 
+Same objective of fooling discriminator, but now higher gradient 
+signal for bad samples => works much better! Standard in practice. 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+High gradient signal 
+Low gradient signal 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+11
+2 
+Minimax objective function: 
+Alternate between: 
+1. Gradient ascent on discriminator 
+2. Instead: Gradient ascent on generator, different 
+objective 
+Instead of minimizing likelihood of discriminator being correct, now 
+maximize likelihood of discriminator being wrong. 
+Same objective of fooling discriminator, but now higher gradient 
+signal for bad samples => works much better! Standard in practice. 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+High gradient signal 
+Low gradient signal 
+Aside: Jointly training two 
+networks is challenging, 
+can be unstable. Choosing 
+objectives with better loss 
+landscapes helps training, 
+is an active area of 
+research.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+11
+3 
+Putting it together: GAN training algorithm 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+11
+4 
+Putting it together: GAN training algorithm 
+Some find k=1 
+more stable, 
+others use k > 1, 
+no best rule. 
+Recent work (e.g. 
+Wasserstein GAN) 
+alleviates this 
+problem, better 
+stability! 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Training GANs: Two-player game 
+11
+5 
+Generator network: try to fool the discriminator by generating real-looking images 
+Discriminator network: try to distinguish between real and fake images 
+Random noise z 
+Generator Network 
+Discriminator Network 
+Fake Images 
+(from generator) 
+Real Images 
+(from training set) 
+Real or Fake 
+After training, use generator network to 
+generate new images 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+Fake and real images copyright Emily Denton et al. 2015. Reproduced with permission.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Adversarial Nets 
+11
+6 
+Nearest neighbor from training set 
+Generated samples 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+Figures copyright Ian Goodfellow et al., 2014. Reproduced with permission.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Adversarial Nets 
+11
+7 
+Nearest neighbor from training set 
+Generated samples (CIFAR-10) 
+Ian Goodfellow et al., ¡°Generative 
+Adversarial Nets¡±, NIPS 2014 
+Figures copyright Ian Goodfellow et al., 2014. Reproduced with permission.
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Adversarial Nets: Convolutional Architectures 
+11
+8 
+Radford et al, ¡°Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks¡±, ICLR 2016 
+Generator is an upsampling network with fractionally-strided convolutions 
+Discriminator is a convolutional network
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 11 May 18, 2017 
+9 
+Radford et al, ¡°Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks¡±, ICLR 2016 
+Generator 
+Generative Adversarial Nets: Convolutional Architectures
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+0 
+Radford et al, 
+ICLR 2016 
+Samples 
+from the 
+model look 
+amazing! 
+Generative Adversarial Nets: Convolutional Architectures
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+1 
+Radford et al, 
+ICLR 2016 
+Interpolating 
+between 
+random 
+points in latent 
+space 
+Generative Adversarial Nets: Convolutional Architectures
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Generative Adversarial Nets: Interpretable Vector Math 
+12
+2 
+Smiling woman Neutral woman Neutral man 
+Samples 
+from the 
+model 
+Radford et al, ICLR 2016
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+3 
+Smiling woman Neutral woman Neutral man 
+Samples 
+from the 
+model 
+Average Z 
+vectors, do 
+arithmetic 
+Radford et al, ICLR 2016 
+Generative Adversarial Nets: Interpretable Vector Math
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+4 
+Smiling woman Neutral woman Neutral man 
+Samples Smiling Man 
+from the 
+model 
+Average Z 
+vectors, do 
+arithmetic 
+Radford et al, ICLR 2016 
+Generative Adversarial Nets: Interpretable Vector Math
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+5 
+Radford et al, 
+ICLR 2016 
+Glasses man No glasses man No glasses woman 
+Generative Adversarial Nets: Interpretable Vector Math
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+6 
+Glasses man No glasses man No glasses woman 
+Woman with glasses 
+Radford et al, 
+ICLR 2016 
+Generative Adversarial Nets: Interpretable Vector Math
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - 12 May 18, 2017 
+7 
+CycleGAN. Zhu et al. 2017. 
+2017: Year of the GAN 
+Better training and generation 
+LSGAN. Mao et al. 2017. 
+BEGAN. Bertholet et al. 2017. 
+Source->Target domain transfer 
+Many GAN applications 
+Pix2pix. Isola 2017. Many examples at 
+https://phillipi.github.io/pix2pix/ 
+Reed et al. 2017. 
+Text -> Image Synthesis 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+¡°The GAN Zoo¡± 
+12
+8 
+https://github.com/hindupuravinash/the-gan-zoo
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+¡°The GAN Zoo¡± 
+12
+9 
+https://github.com/hindupuravinash/the-gan-zoo 
+See also: https://github.com/soumith/ganhacks for tips 
+and tricks for trainings GANs
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+GANs 
+13
+0 
+Don¡¯t work with an explicit density function 
+Take game-theoretic approach: learn to generate from training distribution through 2-player 
+game 
+Pros: 
+- Beautiful, state-of-the-art samples! 
+Cons: 
+- Trickier / more unstable to train 
+- Can¡¯t solve inference queries such as p(x), p(z|x) 
+Active areas of research: 
+- Better loss functions, more stable training (Wasserstein GAN, LSGAN, many others) 
+- Conditional GANs, GANs for all kinds of applications
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Recap 
+13
+1 
+Generative Models 
+- PixelRNN and PixelCNN 
+- Variational Autoencoders (VAE) 
+- Generative Adversarial Networks (GANs) 
+Explicit density model, optimizes exact likelihood, good 
+samples. But inefficient sequential generation. 
+Optimize variational lower bound on likelihood. Useful 
+latent representation, inference queries. But current 
+sample quality not the best. 
+Game-theoretic approach, best samples! 
+But can be tricky and unstable to train, 
+no inference queries. 
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Recap 
+13
+2 
+Generative Models 
+- PixelRNN and PixelCNN 
+- Variational Autoencoders (VAE) 
+- Generative Adversarial Networks (GANs) 
+Explicit density model, optimizes exact likelihood, good 
+samples. But inefficient sequential generation. 
+Optimize variational lower bound on likelihood. Useful 
+latent representation, inference queries. But current 
+sample quality not the best. 
+Game-theoretic approach, best samples! 
+But can be tricky and unstable to train, 
+Also recent work in combinations of no inference queries. 
+these types of models! E.g. Adversarial 
+Autoencoders (Makhanzi 2015) and 
+PixelVAE (Gulrajani 2016)
+
+Fei-Fei Li & Justin Johnson & Serena Yeung Lecture 13 - May 18, 2017 
+Recap 
+13
+3 
+Generative Models 
+- PixelRNN and PixelCNN 
+- Variational Autoencoders (VAE) 
+- Generative Adversarial Networks (GANs) 
+Explicit density model, optimizes exact likelihood, good 
+samples. But inefficient sequential generation. 
+Optimize variational lower bound on likelihood. Useful 
+latent representation, inference queries. But current 
+sample quality not the best. 
+Game-theoretic approach, best samples! 
+But can be tricky and unstable to train, 
+no inference queries. 
+Next time: Reinforcement Learning
+
